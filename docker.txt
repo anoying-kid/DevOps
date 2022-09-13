@@ -1,0 +1,116 @@
+yum install docker -y
+service docker status
+docker info
+service docker start
+
+docker images : for images
+docker ps : running images
+docker ps -a : running and stopped images
+
+installing 
+
+docker run -it <container> /bin/bash
+
+docker pull <container>
+
+search:
+
+docker search : search
+
+naming container
+
+docker run -it --name <name> ubuntu /bin/bash
+
+starting with name: 
+docker start <docker name>
+
+going into the container
+docker attach <docker name>
+
+deleting 
+
+docker rm <name>
+
+docker diff <container> : to see the differences
+
+docker commit <container> <imagename> : to make container to image
+
+dockerfile
+
+FROM ubuntu
+WORKDIR /tmp
+RUN echo "this is line2" > /tmp/testfile
+ENV myname aalupakoda
+COPY testfile1 /tmp
+ADD test.tar.gz /tmp
+
+docker build -t <name> .
+
+Volumme:
+
+# sharing using dockerfile
+
+FORM ubuntu
+VOLUME ["/myvolume"]
+
+volume then can be share to other if creating new container
+
+docker run -it --name <name> --privileged=true --volumes-from <which container volume to share> <ubuntu> /bin/bash
+
+# sharing using "-v" command
+
+docker run -it --name container3 -v /volume2 ubuntu /bin/bash
+docker run -it --name container4 --privileged=true --volumes-from container3 ubuntu /bin/bash
+
+# mapping
+
+docker run -it --name hostcont -v /home/ec2-user:/aalu --privileged=true ubuntu /bin/bash
+(it will map the home user to docker file)
+
+----
+
+# Docker Port expose
+
+yum install -y
+yum update -y
+service docker start
+docker run -td --name <name> -p 80:80 ubuntu
+docker port <name container> : show the port of the container
+
+docker exec -it container1 /bin/bash
+
+
+*
+in ubuntu
+apt-get update
+apt-get install apache2 -y
+cd /var/www/html/
+echo "this is line1" > index.html
+
+service apache2 restart
+service apache2 status
+
+now we can access this using public ip
+
+# jenkins
+docker run -td --name container2 -p 8080:8080 jenkins/jenkins
+
+check the ec2 wizard
+go to security > the required wizard > edit inbound
+add custom tcp > port 8080 > 0.0.0.0/0
+
+# docker hub
+
+docker login
+docker tag image1 aalupakoda/project1
+docker push aalupakoda/project1
+
+pulling
+
+docker pull <name>
+
+#commands
+
+docker stop $(docker ps -a -q) : stop all container
+docker rm $(docker ps -a -q): delete stop container
+docker rmi -f $(docker images -q) : delete all

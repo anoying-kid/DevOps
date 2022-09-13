@@ -1,0 +1,141 @@
+chef generate cookbook <test-cookboo>
+chef generate recipe <recipe name> : creating recipe
+
+chef exec ruby -c <file path> : checking the syntax
+
+chef-client -zr "recipe[<cookbook>::<recipe>]" : running the recipe
+
+running linux command
+
+execute "run a script" do
+command <<-EOH
+mkdir folder
+touch file1
+EOH
+end
+
+creating user
+
+user "anar" do
+action :create
+end
+
+adding user to group
+
+group "fruitchaat" do
+action :create
+members 'anar'
+append true
+end
+
+running multiple cookbook (only one recipe will run)
+
+chef-client -zr "recipe[<cookboo>::<recipe>], recipe[<cookbook>::<recipe>]"
+
+running multiple recipe of a cookbook
+
+add in default.rb
+
+include_recipe "<cookbook>::<recipe>"
+include_recipe "<cookbook>::<recipe>"
+
+adding both
+
+chef-client -zr "recipe[<cookboo>::<default>], recipe[<cookbook>::<default>]"
+OR
+chef-client -zr "recipe[<cookbook>], recipe[<cookbook>]"
+
+download the starter kit from chef server
+
+scp -i pakoda123.pem -r ~/Desktop/chef-repo ec2-user@13.127.236.134:~/
+
+: send the file to linux machine
+
+then 
+
+cd chef-repo/.chef
+knife ssl check
+
+knife bootstrap 172.31.37.107 --ssh-user ec2-user --sudo -i pakoda123.pem -N node1
+
+knife node list
+
+knife cookbook upload <bookname>
+
+knife cookbook list
+
+knife node run_list set <nodename> "recipe[<bookname>::<recipe>]"
+
+knife node show node1
+
+##
+ now open the node  and run
+
+chef-client
+
+site will wont work , go to security group add to ssh to all trafic and give it a ip
+
+
+automation
+
+in node1 
+vi/etc/crontab
+* * * * * root chef-client
+
+#!/bin/bash
+sudo su
+yum update -y
+yum install wget -y
+wget https://packages.chef.io/files/stable/chef-workstation/22.7.1006/el/8/chef-workstation-22.7.1006-1.el8.x86_64.rpm
+
+-------
+package 'httpd' do
+        action :install
+end
+
+file '/var/www/html/index.html' do
+content 'This is line1'
+action :create
+end
+
+service 'httpd' do
+        action [ :enable, :start ]
+end
+-------
+
+deleting the node and cookbook
+
+knife node delete <nodename>
+knife cookbook delete <cookbook>
+
+knife client delete <node>
+
+Role
+new role in roles
+
+#devops.rb
+name "devops"
+description "web server role"
+run_list "recipe[book1::apache]"
+#run_list "recipe[book1]" : will run all the recipe in book1
+
+knife role from file roles/devops.rb
+knife role list
+
+knife node run_list set node1 "role[devops]"
+
+adding bootstrap
+knife bootstrap 13.126.254.223 --ssh-user ec2-user --sudo -i pakoda123.pem -N node4
+
+adding to node run_list
+knife node run_list set node4 "role[devops]"
+
+knife cookbook upload book1
+
+
+rb installing multiple pakckage
+%w(httpd git vim) .each do |p|
+package p do
+action :install
+end
+end

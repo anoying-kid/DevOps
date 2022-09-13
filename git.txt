@@ -1,0 +1,57 @@
+git init
+git add <filename>
+git add . (everthing)
+git commit
+git commit -m "<message here>"
+git commit -am "<skipping add command>"
+git remote add <origin> <link>
+git push -u <origin> <branchname>
+
+for auth
+
+git remote add origin https://<rsa>@github.com/<username>/<repo>
+(set-url for setting url)
+
+git log
+git log -1 (last 1)
+git log --online (all)
+
+Branch
+
+git branch <branchname>
+git checkout <branchname> : move to diff branch
+git branch -d <branchname> : for delete if merged
+git branch -D < brachname> : force fully
+
+git checkout -b <branchname> : create branch and moving
+
+git merge branchname
+
+Stash 
+
+git stash
+git stash list
+git stash apply stash@{1}
+git stash clear
+
+git reset <file>
+git reset .
+
+revert : revet to previous commit
+
+git log --online (get the commit id)
+git revert <id>
+
+untracked file
+
+git clean -i : manual
+git clean -n : dry run
+git clean -f : forcefully
+
+tag
+
+git tag -a <tagname> -m <message> <commit-id>
+git tag : list
+git show <tag name>
+git tag -d tag : delete
+

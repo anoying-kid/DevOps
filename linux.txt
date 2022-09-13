@@ -1,0 +1,21 @@
+usermod -aG wheel anon
+
+scp -i pakoda123.pem -r ~/Desktop/chef-repo ec2-user@13.127.236.134:~/
+
+
+cent os mirror error
+
+from dockerfile
+
+FROM centos
+RUN cd /etc/yum.repos.d/
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+RUN yum -y install java
+CMD /bin/bash
+
+----
+sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+dnf distro-sync
+dnf -y install java
